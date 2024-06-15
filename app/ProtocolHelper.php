@@ -48,7 +48,10 @@ trait ProtocolHelper
 
     function getUssdSession($data)
     {
-        $session = UssdSession::where('session_id', $data['transactionID'])->first();
+        $session = UssdSession::query()
+            ->where('session_id', $data['transactionID'])
+            ->where('msisdn', $data['sourceNumber'])
+            ->first();
 
         if ($session !== NULL) {
             $session->updated_at = Carbon::now();
@@ -63,7 +66,10 @@ trait ProtocolHelper
             ]);
 
 
-            return UssdSession::where('session_id', $data['transactionID'])->orderby('created_at', 'DESC')->first()->session_id;
+            return UssdSession::query()
+                ->where('session_id', $data['transactionID'])
+                ->orderby('created_at', 'DESC')
+                ->first()->session_id;
         }
 
     }
