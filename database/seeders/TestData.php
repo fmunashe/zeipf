@@ -19,8 +19,8 @@ class TestData extends Seeder
         for ($i = 12; $i <= 15; $i++) {
             MemberData::query()->create([
                 'national_id' => 'test' . $i,
-                'name' => Str::words(5),
-                'surname' => Str::words(5),
+                'name' => ucfirst(Str::random(5)),
+                'surname' => ucfirst(Str::random(5)),
                 'dob' => Carbon::now()->subYears(30)->format("Y-m-d"),
                 'doj' => Carbon::now()->subYears(5)->format("Y-m-d"),
                 'doe' => Carbon::now()->subYears(2)->format("Y-m-d"),
