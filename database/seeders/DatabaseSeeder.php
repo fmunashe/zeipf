@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
 //            'email' => 'test@example.com',
 //        ]);
         $this->call(AccessTokenSeeder::class);
+        $this->call(TestData::class);
     }
 }

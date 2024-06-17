@@ -62,7 +62,9 @@ trait ProtocolHelper
                 'session_id' => $data['transactionID'],
                 'msisdn' => $data['sourceNumber'],
                 'app_id' => $data['appId'],
-                'application_unique_id' => uniqid($data['transactionID'])
+                'application_unique_id' => uniqid($data['transactionID']),
+                'stage' => 0,
+                'payload_text' => null,
             ]);
 
 

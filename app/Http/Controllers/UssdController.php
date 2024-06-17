@@ -8,12 +8,12 @@ use App\ProtocolHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class UssdController extends Controller
 {
     use ProtocolHelper;
+
     public function index(Request $request)
     {
         $app = AccessToken::where('token', $request->bearerToken())->first();
@@ -41,21 +41,26 @@ class UssdController extends Controller
             try {
                 //Map the data for to conform to the request sent to Main USSD.
                 $ussdResponse = $this->restCallToUSSD($this->mapArrayForUSSD($formattedXMLResponse), $formattedXMLResponse['stage'] == 'FIRST', $session_id);
-                if ($ussdResponse->status() != 200) {
-                    throw new \Exception($ussdResponse->getContent());
+
+                Log::info("ussd response is ", [$ussdResponse]);
+
+                if ($ussdResponse['responseExitCode'] != 200) {
+                    throw new \Exception($ussdResponse['message']);
                 }
 
-                $ussdResponseBody = json_decode($ussdResponse->body(), true);
+                $message = $ussdResponse['message'];
+                $stage = "MENU_PROCESSING";
+                if ($ussdResponse['shouldClose']) {
+                    $stage = "COMPLETE";
+                }
 
-                $message = $ussdResponseBody['responseExitCode'] != 200 ? $ussdResponseBody['message'] : $ussdResponseBody['ussdMenu'];
-
-                $formattedXMLResponse['stage'] = $ussdResponseBody['shouldClose'] ? 'COMPLETE' : 'MENU_PROCESSING';
+                $formattedXMLResponse['stage'] = $stage;
                 $formattedXMLResponse['message'] = $message;
                 $formattedXMLResponse['code'] = 200;
 
                 return $this->xmlResponder($formattedXMLResponse);
             } catch (\Exception $e) {
-                //Prepare a Failure message
+
                 Log::info("something bad happened here ", [$e->getMessage()]);
 
                 $formattedXMLResponse['stage'] = 'COMPLETE';
@@ -71,15 +76,13 @@ class UssdController extends Controller
     private function restCallToUSSD($body, $is_start, $session_id)
     {
         $base_url = App::environment(['local', 'staging', 'test']) ? config('app.ussd_test_url') : config('app.ussd_live_url');
-        $url = $is_start ? $base_url . '/session/' . $session_id . '/start' : $base_url . '/session/' . $session_id . '/response';
+//        $url = $is_start ? $base_url . '/session/' . $session_id . '/start' : $base_url . '/session/' . $session_id . '/response';
 
-        $body['text'] = $session_id ? $body['text'] : "1";
-
+        $body['text'] = $session_id ? $body['text'] : "";
+        $body['sessionId'] = $session_id;
         try {
-            return Http::withHeaders([
-                'Accept' => 'application/json',
-            ])->timeout(60)->post($url, $body);
-
+            $dataProcessor = new UssdBackendController();
+            return $dataProcessor->DataProcessing($body);
         } catch (\Exception $e) {
             return response($e->getMessage(), 500);
         }
@@ -115,7 +118,7 @@ class UssdController extends Controller
         header('Content-type: text/xml; charset=utf-8');
         $final_response = '<?xml version="1.0" encoding="UTF-8"?>';
         $final_response .= '<messageResponse xmlns="http://econet.co.zw/intergration/messagingSchema">';
-        $final_response .= '<transactionTime>'.Carbon::now().'</transactionTime>';
+        $final_response .= '<transactionTime>' . Carbon::now() . '</transactionTime>';
         $final_response .= '<transactionID>' . $data['transactionID'] . '</transactionID>';
         $final_response .= '<sourceNumber>263778234258</sourceNumber>';
         $final_response .= '<destinationNumber>908</destinationNumber>';

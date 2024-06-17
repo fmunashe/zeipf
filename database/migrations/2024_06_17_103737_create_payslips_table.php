@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ussd_sessions', function (Blueprint $table) {
+        Schema::create('payslips', function (Blueprint $table) {
             $table->id();
-            $table->text('session_id');
-            $table->text('msisdn');
-            $table->integer('app_id');
-            $table->text('application_unique_id');
-            $table->integer('stage');
-            $table->text('payload_text')->nullable();
+            $table->text("ecNumber");
+            $table->decimal("gross",9,2);
+            $table->decimal("deductions",9,2);
+            $table->decimal("net",9,2);
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ussd_sessions');
+        Schema::dropIfExists('payslips');
     }
 };
