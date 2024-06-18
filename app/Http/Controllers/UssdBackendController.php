@@ -9,14 +9,6 @@ class UssdBackendController extends Controller
 {
     use CommonData;
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     public function process(array $request): array
     {
         $sessionId = $request['sessionId'];
