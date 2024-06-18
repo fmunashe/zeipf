@@ -14,5 +14,5 @@ Route::prefix('v1/')->group(function () {
 });
 
 Route::prefix('v1/')->group(function () {
-    Route::post('zeipf/backend/live', [UssdBackendController::class, 'DataProcessing'])->name("ZeipfBackendRoute");
+    Route::post('zeipf/backend/live', [UssdBackendController::class, 'process'])->name("ZeipfBackendRoute");
 });

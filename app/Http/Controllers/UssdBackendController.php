@@ -17,14 +17,13 @@ class UssdBackendController extends Controller
         //
     }
 
-    public function DataProcessing(array $request): array
+    public function process(array $request): array
     {
-        //$ussd_string_exploded = explode("*", $userInput);
         $sessionId = $request['sessionId'];
         $msisdn = $request['msisdn'];
         $payload = $request['text'];
         $currentSession = $this->retrieveSession($sessionId, $msisdn);
-        Log::info("current session is ", [$currentSession]);
+
         if ($currentSession->stage == 0) {
             $response['message'] = "Welcome to ZEIPF and ZESA Staff Pension Fund USSD Portal, enter your EC number as given by your employer: \n";
             $response['responseExitCode'] = 200;

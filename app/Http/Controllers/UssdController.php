@@ -42,8 +42,6 @@ class UssdController extends Controller
                 //Map the data for to conform to the request sent to Main USSD.
                 $ussdResponse = $this->restCallToUSSD($this->mapArrayForUSSD($formattedXMLResponse), $formattedXMLResponse['stage'] == 'FIRST', $session_id);
 
-                Log::info("ussd response is ", [$ussdResponse]);
-
                 if ($ussdResponse['responseExitCode'] != 200) {
                     throw new \Exception($ussdResponse['message']);
                 }
@@ -75,14 +73,11 @@ class UssdController extends Controller
 
     private function restCallToUSSD($body, $is_start, $session_id)
     {
-        $base_url = App::environment(['local', 'staging', 'test']) ? config('app.ussd_test_url') : config('app.ussd_live_url');
-//        $url = $is_start ? $base_url . '/session/' . $session_id . '/start' : $base_url . '/session/' . $session_id . '/response';
-
         $body['text'] = $session_id ? $body['text'] : "";
         $body['sessionId'] = $session_id;
         try {
             $dataProcessor = new UssdBackendController();
-            return $dataProcessor->DataProcessing($body);
+            return $dataProcessor->process($body);
         } catch (\Exception $e) {
             return response($e->getMessage(), 500);
         }

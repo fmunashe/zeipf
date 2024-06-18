@@ -115,7 +115,10 @@ trait CommonData
     function displayPayslip($ecNumber)
     {
         if (!empty($ecNumber)) {
-            $payslip = Payslip::query()->where('ecNumber', '=', $ecNumber)->first();
+            $payslip = Payslip::query()
+                ->where('ecNumber', '=', $ecNumber)
+                ->latest('created_at')
+                ->first();
             if ($payslip) {
                 $details = [];
                 $details['ecNumber'] = $payslip->ecNumber;
