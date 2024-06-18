@@ -22,12 +22,11 @@ class UssdController extends Controller
         if (Protocols::parse($app->protocol_id) == Protocols::REST()) {
             //Call Rest parser.
         } else if (Protocols::parse($app->protocol_id) == Protocols::SOAP()) {
-            //Call the XML Parser
+
             $formattedXMLResponse = $this->formatXMLRequest($request->getContent());
 
             $formattedXMLResponse['appId'] = $app->id;
 
-            //handle the session.
             $session_id = $this->getUssdSession($formattedXMLResponse);
 
             $formattedXMLResponse['shortCode'] = $app->short_code;
