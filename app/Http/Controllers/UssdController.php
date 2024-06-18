@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Enums\Protocols;
 use App\Models\AccessToken;
 use App\ProtocolHelper;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
 class UssdController extends Controller
@@ -101,29 +99,6 @@ class UssdController extends Controller
         $final_response .= '</messageResponse>';
 
         return response($final_response, $data['code'], [
-            'Content-Type' => 'application/xml'
-        ]);
-    }
-
-    public function direct(Request $request)
-    {
-        $xml = simplexml_load_string($request->getContent());
-        $jsonFormatData = json_encode($xml);
-        $data = json_decode($jsonFormatData, true);
-        header('Content-type: text/xml; charset=utf-8');
-        $final_response = '<?xml version="1.0" encoding="UTF-8"?>';
-        $final_response .= '<messageResponse xmlns="http://econet.co.zw/intergration/messagingSchema">';
-        $final_response .= '<transactionTime>' . Carbon::now() . '</transactionTime>';
-        $final_response .= '<transactionID>' . $data['transactionID'] . '</transactionID>';
-        $final_response .= '<sourceNumber>263778234258</sourceNumber>';
-        $final_response .= '<destinationNumber>908</destinationNumber>';
-        $final_response .= '<message>Hello, Welcome to Zesa.</message>';
-        $final_response .= '<stage>MENU_PROCESSING</stage>';
-        $final_response .= '<channel>USSD</channel>';
-        $final_response .= '<applicationTransactionID>ZESA</applicationTransactionID> ';
-        $final_response .= '<transactionType>COMPLETE</transactionType>';
-        $final_response .= '</messageResponse>';
-        return response($final_response, 200, [
             'Content-Type' => 'application/xml'
         ]);
     }
