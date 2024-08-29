@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:messageRequest xmlns:tns="http://econet.co.zw/intergration/messagingSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://econet.co.zw/intergration/messagingSchema ussd-router.xsd ">
+  <tns:transactionTime>2001-12-31T12:00:00</tns:transactionTime>
+  <tns:transactionID>13355545891110</tns:transactionID>
+  <tns:sourceNumber>0778234258</tns:sourceNumber>
+  <tns:destinationNumber>908</tns:destinationNumber>
+  <tns:message>CONT12</tns:message>
+  <tns:stage>FIRST</tns:stage>
+  <tns:channel>USSD</tns:channel>
+</tns:messageRequest>

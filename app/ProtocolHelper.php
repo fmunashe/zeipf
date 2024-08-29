@@ -10,18 +10,20 @@ trait ProtocolHelper
     function formatXMLRequest($xmltext): array
     {
         $xmlObject = simplexml_load_string($xmltext, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $namespaces = $xmlObject->getNamespaces(true);
-        $tns = $xmlObject->children($namespaces['tns']);
+        $result = json_decode(json_encode($xmlObject), true);
+       // $namespaces = $xmlObject->getNamespaces(true);
+        \Log::info("result is ", [$result]);
+       // $tns = $xmlObject->children($namespaces['tns']);
 
-        $result = [
-            'transactionTime' => (string)$tns->transactionTime,
-            'transactionID' => (string)$tns->transactionID,
-            'sourceNumber' => (string)$tns->sourceNumber,
-            'destinationNumber' => (string)$tns->destinationNumber,
-            'message' => (string)$tns->message,
-            'stage' => (string)$tns->stage,
-            'channel' => (string)$tns->channel,
-        ];
+       // $result = [
+       //     'transactionTime' => (string)$tns->transactionTime,
+      //      'transactionID' => (string)$tns->transactionID,
+      //      'sourceNumber' => (string)$tns->sourceNumber,
+      //      'destinationNumber' => (string)$tns->destinationNumber,
+       //     'message' => (string)$tns->message,
+      //      'stage' => (string)$tns->stage,
+       ////     'channel' => (string)$tns->channel,
+      //  ];
 
 
         return [
