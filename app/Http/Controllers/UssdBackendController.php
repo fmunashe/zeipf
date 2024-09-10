@@ -135,15 +135,15 @@ class UssdBackendController extends Controller
                 case 'pensioner':
                     if ($selectedOption == '1') {
                         $personalInformation = $this->displayPersonalInformation($ussd_string_exploded[0]);
-                        $response['message'] = "Member Information\n";
+                        $response['message'] = "Member Info\n";
                         $response['message'] .= "Name: " . $personalInformation['name'] . "\n";
                         $response['message'] .= "Surname: " . $personalInformation['surname'] . "\n";
-                        $response['message'] .= "National ID: " . $personalInformation['national_id'] . "\n";
-                        $response['message'] .= "Date of Birth: " . $personalInformation['dob'] . "\n";
-                        $response['message'] .= "Date Joined Fund: " . $personalInformation['doj'] . "\n";
-                        $response['message'] .= "Date of Exit: " . ($personalInformation['doe'] != "1900-01-00" ? $personalInformation['doe'] : "Not Applicable") . "\n";
+                        $response['message'] .= "ID: " . $personalInformation['national_id'] . "\n";
+                        $response['message'] .= "DOB: " . $personalInformation['dob'] . "\n";
+                        $response['message'] .= "DJF: " . $personalInformation['doj'] . "\n";
+                        $response['message'] .= "DOE: " . ($personalInformation['doe'] != "1900-01-00" ? $personalInformation['doe'] : "Not Applicable") . "\n";
                         $response['message'] .= "Status: " . $personalInformation['memberStatus'] . "\n";
-                        $response['message'] .= "Membership Category: " . $personalInformation['memberCategory'] . "\n";
+                        $response['message'] .= "Category: " . $personalInformation['memberCategory'] . "\n";
                         $response['responseExitCode'] = 200;
                         $response['shouldClose'] = true;
                         $this->clearSession($sessionId, $msisdn);
@@ -191,15 +191,15 @@ class UssdBackendController extends Controller
                 case 'frozen':
                     if ($selectedOption == '1') {
                         $personalInformation = $this->displayPersonalInformation($ussd_string_exploded[0]);
-                        $response['message'] = "Member Information\n";
+                        $response['message'] = "Member Info\n";
                         $response['message'] .= "Name: " . $personalInformation['name'] . "\n";
                         $response['message'] .= "Surname: " . $personalInformation['surname'] . "\n";
-                        $response['message'] .= "National ID: " . $personalInformation['national_id'] . "\n";
-                        $response['message'] .= "Date of Birth: " . $personalInformation['dob'] . "\n";
-                        $response['message'] .= "Date Joined Fund: " . $personalInformation['doj'] . "\n";
-                        $response['message'] .= "Date of Exit: " . ($personalInformation['doe'] != "1900-01-00" ? $personalInformation['doe'] : "Not Applicable") . "\n";
+                        $response['message'] .= "ID: " . $personalInformation['national_id'] . "\n";
+                        $response['message'] .= "DOB: " . $personalInformation['dob'] . "\n";
+                        $response['message'] .= "DJF: " . $personalInformation['doj'] . "\n";
+                        $response['message'] .= "DOE: " . ($personalInformation['doe'] != "1900-01-00" ? $personalInformation['doe'] : "Not Applicable") . "\n";
                         $response['message'] .= "Status: " . $personalInformation['memberStatus'] . "\n";
-                        $response['message'] .= "Membership Category: " . $personalInformation['memberCategory'] . "\n";
+                        $response['message'] .= "Category: " . $personalInformation['memberCategory'] . "\n";
                         $response['responseExitCode'] = 200;
                         $response['shouldClose'] = true;
                         $this->clearSession($sessionId, $msisdn);
