@@ -12,14 +12,14 @@ trait CommonData
 {
     function passed_authentication($national_id, $ecNumber): bool
     {
-        Log::info("User input inside f1: " . $national_id . " " . $ecNumber);
+       // Log::info("User input inside f1: " . $national_id . " " . $ecNumber);
         if (!empty($national_id) && !empty($ecNumber)) {
             $memberRecord = MemberData::query()
                 ->where('national_id', '=', $national_id)
                 ->where('ecNumber', '=', $ecNumber)
                 ->first();
 
-            Log::info("member record is ", [$memberRecord]);
+          //  Log::info("member record is ", [$memberRecord]);
 
             if ($memberRecord != null) {
                 $_SESSION['national_id'] = $memberRecord->national_id;
@@ -33,7 +33,7 @@ trait CommonData
                 $_SESSION['memberStatus'] = $memberRecord->memberStatus;
                 $_SESSION['memberCategory'] = $memberRecord->memberCategory;
                 $_SESSION['life_status'] = $memberRecord->lifeStatus;
-                Log::info("User logged in successfully: " . $_SESSION['name'] . " " . $_SESSION['surname'] . " " . $_SESSION['ecNumber']);
+              //  Log::info("User logged in successfully: " . $_SESSION['name'] . " " . $_SESSION['surname'] . " " . $_SESSION['ecNumber']);
 
                 return $this->is_authenticated();
             }

@@ -16,7 +16,7 @@ class UssdController extends Controller
 
     public function index(Request $request)
     {
-        Log::info("Incoming Request ", [$request->all()]);
+       // Log::info("Incoming Request ", [$request->getContent()]);
         $app = AccessToken::where('token', $request->bearerToken())->first();
 
         if (is_null($app))
@@ -26,7 +26,7 @@ class UssdController extends Controller
             //Call Rest parser.
         } else if (Protocols::parse($app->protocol_id) == Protocols::SOAP()) {
             //Call the XML Parser
-            Log::info("Request to be parsed", [$request->getContent()]);
+           // Log::info("Request to be parsed", [$request->getContent()]);
             $formattedXMLResponse = $this->formatXMLRequest($request->getContent());
 
             $formattedXMLResponse['appId'] = $app->id;
@@ -49,7 +49,8 @@ class UssdController extends Controller
                 }
 
                 $message = $ussdResponse['message'];
-                $stage = "MENU_PROCESSING";
+               // $stage = "MENU_PROCESSING";
+                $stage = "session_active";
                 if ($ussdResponse['shouldClose']) {
                     $stage = "COMPLETE";
                 }
@@ -81,6 +82,7 @@ class UssdController extends Controller
             $dataProcessor = new UssdBackendController();
             return $dataProcessor->process($body);
         } catch (\Exception $e) {
+            Log::info("danger here ",[$e->getMessage()]);
             return response($e->getMessage(), 500);
         }
     }

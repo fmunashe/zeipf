@@ -35,7 +35,7 @@ class UssdBackendController extends Controller
             //validate id number
             if ($this->passed_authentication($payload, $currentSession->payload_text)) {
                 $member_type = $_SESSION['memberType'];
-                Log::info("Member Type: " . $member_type);
+               // Log::info("Member Type: " . $member_type);
                 // Display menu based on member type
                 switch ($member_type) {
                     case 'active':
@@ -83,12 +83,12 @@ class UssdBackendController extends Controller
                         $response['message'] = "Member Information\n";
                         $response['message'] .= "Name: " . $personalInformation['name'] . "\n";
                         $response['message'] .= "Surname: " . $personalInformation['surname'] . "\n";
-                        $response['message'] .= "National ID: " . $personalInformation['national_id'] . "\n";
-                        $response['message'] .= "Date of Birth: " . $personalInformation['dob'] . "\n";
-                        $response['message'] .= "Date Joined Fund: " . $personalInformation['doj'] . "\n";
-                        $response['message'] .= "Date of Exit: " . ($personalInformation['doe'] != "1900-01-00" ? $personalInformation['doe'] : "Not Applicable") . "\n";
+                        $response['message'] .= "ID: " . $personalInformation['national_id'] . "\n";
+                        $response['message'] .= "DOB: " . $personalInformation['dob'] . "\n";
+                        $response['message'] .= "DJF: " . $personalInformation['doj'] . "\n";
+                        $response['message'] .= "DOE: " . ($personalInformation['doe'] != "1900-01-00" ? $personalInformation['doe'] : "Not Applicable") . "\n";
                         $response['message'] .= "Status: " . $personalInformation['memberStatus'] . "\n";
-                        $response['message'] .= "Membership Category: " . $personalInformation['memberCategory'] . "\n";
+                        $response['message'] .= "Category: " . $personalInformation['memberCategory'] . "\n";
                         $response['responseExitCode'] = 200;
                         $response['shouldClose'] = true;
 
@@ -96,7 +96,7 @@ class UssdBackendController extends Controller
                         return $response;
 
                     } elseif ($selectedOption == '2') {
-                        $response['message'] = "Accumulated Credit Summary\n";
+                        $response['message'] = "Accumulated Credit\n";
                         $accountBalance = $this->displayAccountBalance($ussd_string_exploded[0]);
                         error_log("Account Balance: " . $accountBalance['zwlOpening']);
                         error_log("Account Interest: " . $accountBalance['zwlInterest']);
