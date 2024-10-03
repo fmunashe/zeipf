@@ -21,6 +21,7 @@ class MemberData extends Model
         'pin',
         'memberCategory',
         'ecNumber',
+        'mortgageBalance',
         'lifeStatus'
     ];
 }

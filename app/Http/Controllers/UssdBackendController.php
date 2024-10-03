@@ -98,13 +98,13 @@ class UssdBackendController extends Controller
                     } elseif ($selectedOption == '2') {
                         $response['message'] = "Accumulated Credit\n";
                         $accountBalance = $this->displayAccountBalance($ussd_string_exploded[0]);
-                        error_log("Account Balance: " . $accountBalance['zwlOpening']);
-                        error_log("Account Interest: " . $accountBalance['zwlInterest']);
-                        error_log("Account Closing: " . $accountBalance['zwlClosing']);
-                        error_log("Account Date: " . $accountBalance['valuationDate']);
-                        $response['message'] .= "Last Valuation Date: " . $accountBalance['valuationDate'] . "\n";
-                        $response['message'] .= "ZWL Opening Balance: " . $accountBalance['zwlOpening'] . " ZWL Interest: " . $accountBalance['zwlInterest'] . " ZWL Closing " . $accountBalance['zwlClosing'] . "\n";
-                        $response['message'] .= "USD Opening Balance: " . $accountBalance['usdOpening'] . " USD Interest: " . $accountBalance['usdInterest'] . " USD Closing " . $accountBalance['usdClosing'] . "\n";
+                       // error_log("Account Balance: " . $accountBalance['zwlOpening']);
+                       // error_log("Account Interest: " . $accountBalance['zwlInterest']);
+                        //error_log("Account Closing: " . $accountBalance['zwlClosing']);
+                       // error_log("Account Date: " . $accountBalance['valuationDate']);
+                        $response['message'] .= "Valuation Date: " . $accountBalance['valuationDate'] . "\n";
+                        $response['message'] .= "ZWG Opening: " . $accountBalance['zwlOpening'] . " ZWG Interest: " . $accountBalance['zwlInterest'] . " ZWG Closing " . $accountBalance['zwlClosing'] . "\n";
+                        $response['message'] .= "USD Opening: " . $accountBalance['usdOpening'] . " USD Interest: " . $accountBalance['usdInterest'] . " USD Closing " . $accountBalance['usdClosing'] . "\n";
                         $response['responseExitCode'] = 200;
                         $response['shouldClose'] = true;
                         $this->clearSession($sessionId, $msisdn);
@@ -141,11 +141,11 @@ class UssdBackendController extends Controller
                         $this->clearSession($sessionId, $msisdn);
                         return $response;
                     } elseif ($selectedOption == '2') {
-                        $response['message'] = "Payslip Summary\n";
+                        $response['message'] = "Payslip\n";
                         $payslipDetail = $this->displayPayslip($ussd_string_exploded[0]);
-                        $response['message'] .= "Gross Pension: " . "ZWL " . $payslipDetail['gross'] . "\n";
-                        $response['message'] .= "Total Deductions: " . "ZWL " . $payslipDetail['deductions'] . "\n";
-                        $response['message'] .= "Net Pension: " . "ZWL " . $payslipDetail['net'] . "\n";
+                        $response['message'] .= "Gross: " . "ZWG " . $payslipDetail['gross'] . "\n";
+                        $response['message'] .= "Deductions: " . "ZWG " . $payslipDetail['deductions'] . "\n";
+                        $response['message'] .= "Net Pension: " . "ZWG " . $payslipDetail['net'] . "\n";
                         $response['responseExitCode'] = 200;
                         $response['shouldClose'] = true;
                         $this->clearSession($sessionId, $msisdn);
@@ -198,10 +198,10 @@ class UssdBackendController extends Controller
                         return $response;
                     } elseif ($selectedOption == '2') {
                         //it says check accumulated capital but it returns accumulated credit
-                        $response['message'] = "Accumulated Credit\n";
+                        $response['message'] = "Accumulated Capital\n";
                         $accountBalance = $this->displayAccountBalance($ussd_string_exploded[0]);
-                        $response['message'] .= "Last Valuation Date: " . $accountBalance['valuationDate'] . "\n";
-                        $response['message'] .= "ZWL Opening Balance: " . $accountBalance['zwlOpening'] . " ZWL Interest: " . $accountBalance['zwlInterest'] . " ZWL Closing " . $accountBalance['zwlClosing'] . "\n";
+                        $response['message'] .= "Valuation Date: " . $accountBalance['valuationDate'] . "\n";
+                        $response['message'] .= "ZWG Opening: " . $accountBalance['zwlOpening'] . " ZWG Interest: " . $accountBalance['zwlInterest'] . " ZWG Closing " . $accountBalance['zwlClosing'] . "\n";
                         $response['responseExitCode'] = 200;
                         $response['shouldClose'] = true;
                         $this->clearSession($sessionId, $msisdn);
